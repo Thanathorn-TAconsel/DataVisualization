@@ -15,6 +15,7 @@ public class DataManager {
         loadData("Superstore.csv");
         System.out.println("Loaded");
         System.out.println(dimensionIndex.keySet());
+        /*
         HashMap<String,ArrayList<Integer>> map = getListOfItem("Category");
         for (String key: map.keySet()) {
             ArrayList<Integer> sector = map.get(key);
@@ -22,6 +23,10 @@ public class DataManager {
             HashMap<String,ArrayList<Integer>> sectorMap = getListOfItem("Sub-Category",sector);
             System.out.println(sectorMap.keySet());
         }
+
+         */
+        String s[] = {"Category","Sub-Category","Quantity"};
+        buildList(s,0,null);
         //System.out.println(map.keySet());
         /*
         for (String r:map.keySet()) {
@@ -33,6 +38,36 @@ public class DataManager {
         }
 
          */
+    }
+    public void buildList(String[] list,int i,ArrayList<Integer> sector) {
+        if (i == 0) {
+            HashMap<String,ArrayList<Integer>> map = getListOfItem(list[i]);
+            for (String key:map.keySet()) {
+                System.out.println(key);
+                buildList(list,i+1,map.get(key));
+            }
+        } else if (i == list.length) {
+            return;
+        } else {
+            HashMap<String,ArrayList<Integer>> map = getListOfItem(list[i],sector);
+            for (String key:map.keySet()) {
+                System.out.println(spaceBuilder(i) + key);
+                buildList(list,i+1,map.get(key));
+            }
+            /*
+            HashMap<String,ArrayList<Integer>> map = getListOfItem(list[i],sector);
+            System.out.println(map.keySet());
+            buildList(list,i+1,map);
+
+             */
+        }
+
+    }
+    public String spaceBuilder(int count) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0;i < count;i++)
+        sb.append("\t");
+        return sb.toString();
     }
     public HashMap<String,ArrayList<Integer>> getListOfItem(String dimension,ArrayList<Integer> sector) {
         HashMap<String,ArrayList<Integer>> map = new HashMap();
