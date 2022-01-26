@@ -25,7 +25,7 @@ public class DataManager {
         }
 
          */
-        String s[] = {"Category","Sub-Category","Quantity"};
+        String s[] = {"Category","Sub-Category","City"};
         buildList(s,0,null);
         //System.out.println(map.keySet());
         /*
@@ -120,11 +120,30 @@ public class DataManager {
         return map;
     }
      */
+    public String[] StringSplit(String input) {
+        boolean en = true;
+        ArrayList<String> output = new ArrayList<String>();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0;i < input.length();i++) {
+            char c = input.charAt(i);
+            if (c == '"') {
+                en = !en;
+            } else if (c == ',') {
+                if (en) {
+                    output.add(stringBuilder.toString());
+                    stringBuilder.setLength(0);
+                }
+            } else {
+                stringBuilder.append(c);
+            }
+        }
+        return output.toArray(new String[0]);
+    }
     public void loadData(String filename) throws Exception {
         FileInputStream fin = new FileInputStream(filename);
         Scanner scan = new Scanner(fin);
         String readline = scan.nextLine();
-        String[] dataArray = readline.split(",");
+        String[] dataArray = StringSplit(readline);
         int i = 0;
         for (String data: dataArray) {
             dimensionIndex.put(data,i);
@@ -132,7 +151,7 @@ public class DataManager {
         }
         while (scan.hasNextLine()) {
             readline = scan.nextLine();
-            dataArray = readline.split(",");
+            dataArray = StringSplit(readline);
             dataList.add(dataArray);
         }
         scan.close();
