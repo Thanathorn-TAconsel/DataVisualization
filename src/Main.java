@@ -8,8 +8,6 @@ public class Main {
         Scanner scan = new Scanner(fin);
         while (scan.hasNextLine()) {
             System.out.println(scan.nextLine());
-            System.out.println("Helloworld");
-            System.out.println("Testing");
         }
     }
     public static void main(String[] args) throws FileNotFoundException {
