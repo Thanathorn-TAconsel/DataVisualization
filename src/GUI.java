@@ -110,7 +110,7 @@ public class GUI {
         //measuresList.setModel(header2);
         rowList.setModel(header2);
         columnList.setModel(header2);
-        tablePanel = new NTable(data,header,rowList.endX(),rowList.getY(),200,400);
+        tablePanel = new NTable(data,header,rowList.endX(),rowList.getY(),200,625);
 
         graphSelection.setBounds(columnList.endX(),columnList.getY(),200,25);
         graphSelectionModel.addAll(graphType);
