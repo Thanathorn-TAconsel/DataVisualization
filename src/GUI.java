@@ -38,6 +38,7 @@ public class GUI {
 
     //JPanel tablePanel = new JPanel();
     NTable tablePanel;
+    NSList test;
 
     GUI(){
         DataLabel.setOpaque(true);DataLabel.setBackground(new Color(170,170,170));DataLabel.setHorizontalAlignment(SwingConstants.CENTER);DataLabel.setForeground(Color.WHITE);
@@ -103,8 +104,10 @@ public class GUI {
                 {"003","Aman","Delhi","India","computer","98","Dictontion"},
                 {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"}};
         String header[] = {"Roll","Name","State","country","Math","Marks","Grade"};
+        String header2[] = {"Roll","Name","State","country","Math","Marks","Grade","Roll","Name","State","country","Math","Marks","Grade","Roll","Name","State","country","Math","Marks","Grade"};
 
         tablePanel = new NTable(data,header,rowList.endX(),rowList.getY(),200,400);
+        //test = new NSList("test",header, tablePanel.getX(), tablePanel.endY(), 200, 100);
 
 
 
@@ -114,6 +117,7 @@ public class GUI {
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setBounds(DataLabel.endX(),DataLabel.endY(),580,600);
 
+        //mainFrame.add(test);
         mainFrame.add(tablePanel);
         mainFrame.add(chartPanel);
         mainFrame.add(graphSelection);
@@ -186,6 +190,40 @@ public class GUI {
             this.add(tableScroll);
             this.setBounds(x,y,w,h);
         }
+        public int endY() {
+            return this.getY()+this.getHeight();
+        }
+        public int endX() {
+            return this.getX()+this.getWidth();
+        }
+    }
+
+    class NSList extends JPanel{
+        JList list = new JList<>();
+        DefaultListModel model = new DefaultListModel();
+        JLabel titleLabel;
+        JScrollPane listScroll;
+        int lebelHeight = 25;
+        NSList(String Title,String[] data,int x,int y,int w,int h){
+            for (int i = 0; i < data.length; i++) {
+                model.addElement(data[i]);
+            }
+            list.setModel(model);
+            titleLabel = new JLabel(Title);
+            titleLabel.setOpaque(true);titleLabel.setHorizontalAlignment(SwingConstants.CENTER);titleLabel.setBackground(new Color(170,170,170));
+            listScroll = new JScrollPane();
+            listScroll.setViewportView(list);
+            listScroll.setVisible(true);
+            titleLabel.setBounds(0,0,w,lebelHeight);
+            listScroll.setBounds(0,lebelHeight,w,h-lebelHeight);
+            this.add(titleLabel);
+            this.add(listScroll);
+            this.setLayout(null);
+            this.setBounds(x,y,w,h);
+        }
+        public void setBGColor(Color bg){list.setOpaque(true);list.setBackground(bg);}
+        public void setFGColor(Color bg){list.setOpaque(true);list.setForeground(bg);}
+        public void setOrientation(int layoutOrientation){list.setLayoutOrientation(layoutOrientation);}
         public int endY() {
             return this.getY()+this.getHeight();
         }
