@@ -5,6 +5,9 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 import javax.xml.crypto.Data;
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,6 +35,9 @@ public class GUI {
 
     JComboBox graphSelection = new JComboBox();
     DefaultComboBoxModel graphSelectionModel = new DefaultComboBoxModel<>();
+
+    //JPanel tablePanel = new JPanel();
+    NTable tablePanel;
 
     GUI(){
         DataLabel.setOpaque(true);DataLabel.setBackground(new Color(170,170,170));DataLabel.setHorizontalAlignment(SwingConstants.CENTER);DataLabel.setForeground(Color.WHITE);
@@ -63,12 +69,52 @@ public class GUI {
         graphSelectionModel.addAll(graphType);
         graphSelection.setModel(graphSelectionModel);
 
+        //test data
+        String data[][] = {{"001","vinod","Bihar","India","Biology","65","First"},
+                {"002","Raju","ABC","Kanada","Geography","58","second"},
+                {"003","Aman","Delhi","India","computer","98","Dictontion"},
+                {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"},
+                {"001","vinod","Bihar","India","Biology","65","First"},
+                {"002","Raju","ABC","Kanada","Geography","58","second"},
+                {"003","Aman","Delhi","India","computer","98","Dictontion"},
+                {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"},
+                {"001","vinod","Bihar","India","Biology","65","First"},
+                {"002","Raju","ABC","Kanada","Geography","58","second"},
+                {"003","Aman","Delhi","India","computer","98","Dictontion"},
+                {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"},
+                {"001","vinod","Bihar","India","Biology","65","First"},
+                {"002","Raju","ABC","Kanada","Geography","58","second"},
+                {"003","Aman","Delhi","India","computer","98","Dictontion"},
+                {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"},
+                {"001","vinod","Bihar","India","Biology","65","First"},
+                {"002","Raju","ABC","Kanada","Geography","58","second"},
+                {"003","Aman","Delhi","India","computer","98","Dictontion"},
+                {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"},
+                {"001","vinod","Bihar","India","Biology","65","First"},
+                {"002","Raju","ABC","Kanada","Geography","58","second"},
+                {"003","Aman","Delhi","India","computer","98","Dictontion"},
+                {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"},
+                {"001","vinod","Bihar","India","Biology","65","First"},
+                {"002","Raju","ABC","Kanada","Geography","58","second"},
+                {"003","Aman","Delhi","India","computer","98","Dictontion"},
+                {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"},
+                {"001","vinod","Bihar","India","Biology","65","First"},
+                {"002","Raju","ABC","Kanada","Geography","58","second"},
+                {"003","Aman","Delhi","India","computer","98","Dictontion"},
+                {"004","Ranjan","Bangloor","India","chemestry","90","Dictontion"}};
+        String header[] = {"Roll","Name","State","country","Math","Marks","Grade"};
+
+        tablePanel = new NTable(data,header,rowList.endX(),rowList.getY(),200,400);
+
+
+
         XYSeries series = new XYSeries("XY Chart");
         XYSeriesCollection dataset = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createTimeSeriesChart("Testing Chart", "Date", "Average Profit", dataset);
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setBounds(DataLabel.endX(),DataLabel.endY(),580,600);
 
+        mainFrame.add(tablePanel);
         mainFrame.add(chartPanel);
         mainFrame.add(graphSelection);
         mainFrame.getContentPane().setBackground(new Color(230,145,56));
@@ -112,6 +158,32 @@ public class GUI {
 
     class NPanel extends JList{
         NPanel(int x,int y,int w,int h){
+            this.setBounds(x,y,w,h);
+        }
+        public int endY() {
+            return this.getY()+this.getHeight();
+        }
+        public int endX() {
+            return this.getX()+this.getWidth();
+        }
+    }
+
+    class NTable extends JPanel{
+        JTable table;
+        JScrollPane tableScroll;
+        DefaultTableModel model;
+        NTable(String[][] data,String[] header,int x,int y,int w,int h){
+            model = new DefaultTableModel(data,header);
+            table = new JTable(model);
+            table.setPreferredScrollableViewportSize(new Dimension(450,63));
+            table.setFillsViewportHeight(true);
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            tableScroll = new JScrollPane();
+            tableScroll.setViewportView(table);
+            tableScroll.setVisible(true);
+            tableScroll.setBounds(0,0,w,h);
+            this.setLayout(null);
+            this.add(tableScroll);
             this.setBounds(x,y,w,h);
         }
         public int endY() {
