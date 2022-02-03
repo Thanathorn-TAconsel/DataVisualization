@@ -178,31 +178,7 @@ public class GUI {
         }
     }
 
-    class NTable extends JPanel{
-        JTable table;
-        JScrollPane tableScroll;
-        DefaultTableModel model;
-        NTable(String[][] data,String[] header,int x,int y,int w,int h){
-            model = new DefaultTableModel(data,header);
-            table = new JTable(model);
-            table.setPreferredScrollableViewportSize(new Dimension(450,63));
-            table.setFillsViewportHeight(true);
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-            tableScroll = new JScrollPane();
-            tableScroll.setViewportView(table);
-            tableScroll.setVisible(true);
-            tableScroll.setBounds(0,0,w,h);
-            this.setLayout(null);
-            this.add(tableScroll);
-            this.setBounds(x,y,w,h);
-        }
-        public int endY() {
-            return this.getY()+this.getHeight();
-        }
-        public int endX() {
-            return this.getX()+this.getWidth();
-        }
-    }
+
 
     class VNSList extends JPanel{
         JList list = new JList<>();
@@ -327,3 +303,28 @@ public class GUI {
 }
 
 
+class NTable extends JPanel{
+    JTable table;
+    JScrollPane tableScroll;
+    DefaultTableModel model;
+    NTable(String[][] data,String[] header,int x,int y,int w,int h){
+        model = new DefaultTableModel(data,header);
+        table = new JTable(model);
+        table.setPreferredScrollableViewportSize(new Dimension(450,63));
+        table.setFillsViewportHeight(true);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tableScroll = new JScrollPane();
+        tableScroll.setViewportView(table);
+        tableScroll.setVisible(true);
+        tableScroll.setBounds(0,0,w,h);
+        this.setLayout(null);
+        this.add(tableScroll);
+        this.setBounds(x,y,w,h);
+    }
+    public int endY() {
+        return this.getY()+this.getHeight();
+    }
+    public int endX() {
+        return this.getX()+this.getWidth();
+    }
+}

@@ -11,14 +11,19 @@ public class DataManager {
     DataManager(String filename) throws Exception {
         loadData(filename);
     }
-    public void display(String scanList[],HashMap map) {
+    public ArrayList<String[]> display(String scanList[],HashMap map) {
         int[] indexList = new int[scanList.length];
         for (int i = 0;i < scanList.length;i++) {
             indexList[i] = dimensionIndex.get(scanList[i]);
         }
-        displayRecusiveMap(map,0,indexList);
+        ArrayList<String[]> foundList = new ArrayList<>();
+        displayRecusiveMap(map,0,indexList,foundList,null);
+        return foundList;
     }
 
+    public boolean isMeasure(String measure) {
+        return isMeasure[dimensionIndex.get(measure)];
+    }
     public Set getDimension() {
         return dimensionIndex.keySet();
     }
@@ -50,15 +55,31 @@ public class DataManager {
         }
         return sum / list.size();
     }
-    public void displayRecusiveMap(HashMap root,int level,int[] indexList) {
+    public void displayRecusiveMap(HashMap root,int level,int[] indexList,ArrayList arrayList,String[] build) {
+
         for (Object key: root.keySet()) {
             Object value = root.get(key);
             System.out.println(spaceBuilder(level) + key);
+            if (build == null) {
+                build = new String[indexList.length];
+                build[level] = (String) key;
+            } else {
+                build[level] = (String) key;
+            }
+
             if (value instanceof HashMap) {
-                displayRecusiveMap((HashMap) value,level+1,indexList);
+                if (level == indexList.length-1) {
+                    System.out.println("END");
+                    arrayList.add(build.clone());
+                    build = null;
+                }
+                displayRecusiveMap((HashMap) value,level+1,indexList,arrayList,build);
             } else if (value instanceof ArrayList) {
-                double sum = avg((ArrayList<Double>) value);
+                    double sum = avg((ArrayList<Double>) value);
                     System.out.println(spaceBuilder(level+1) + sum);
+                    build[level+1] = sum + "";
+                    arrayList.add(build.clone());
+                    build = null;
             }
         }
     }

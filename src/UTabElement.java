@@ -23,6 +23,13 @@ public class UTabElement extends JPanel {
     int tabIndex = 0;
     int moveToIndex = -1;
     UTabElement uTabElement;
+    public UTabElement clone() {
+        return  new UTabElement(this.displayText.getText() ,this.bind);
+    }
+    UTab des;
+    public void setDes(UTab des) {
+        this.des = des;
+    }
     UTabElement() {
         uTabElement = this;
         this.setBackground(Color.black);
@@ -54,6 +61,9 @@ public class UTabElement extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                if (des != null) {
+                    des.addElements(uTabElement.clone());
+                }
                 if (isSelected) {
                     setBackground(selectColor);
                     displayText.setForeground(selectColorText);
@@ -68,6 +78,7 @@ public class UTabElement extends JPanel {
                     uTab.elements.add(moveToIndex,uTabElement);
                     uTab.update();
                 }
+                uTab.dragingContent = null;
             }
 
             @Override
@@ -93,9 +104,15 @@ public class UTabElement extends JPanel {
         this.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                uTab.dragingContent = uTabElement;
                 if (isVertZ) {
-                    setLocation(new Point(downLocation.x,downLocation.y + (e.getYOnScreen() - mouseDownLocation.y)));
-                    moveToIndex = uTab.previewIndexAtLocation(getY());
+                    if (e.getX() < uTab.getWidth()) {
+                        setLocation(new Point(downLocation.x,downLocation.y + (e.getYOnScreen() - mouseDownLocation.y)));
+                        moveToIndex = uTab.previewIndexAtLocation(getY());
+                    } else {
+                        moveToIndex = -1;
+                    }
+
                 } else {
                     setLocation(new Point(downLocation.x + (e.getXOnScreen() - mouseDownLocation.x),downLocation.y));
                     moveToIndex = uTab.previewIndexAtLocation(getX());
@@ -126,6 +143,9 @@ public class UTabElement extends JPanel {
     UTabElement(String text) {
         this();
         this.displayText.setText(text);
+    }
+    public String getText() {
+        return this.displayText.getText();
     }
     Object bind;
     UTabElement(String text,Object bind) {

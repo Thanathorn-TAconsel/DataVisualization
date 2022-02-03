@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class UTabVertical extends UTab{
     int elementsSize = 40;
+
     @Override
     public void addElements(UTabElement uTabElement) {
         uTabElement.assign(this,elements.size(),new Dimension(this.getWidth() - spacing*2,elementsSize));
@@ -14,6 +15,10 @@ public class UTabVertical extends UTab{
         uTabElement.repaint();
         uTabElement.displayText.repaint();
         update();
+    }
+    public int previewIndexAtLocation(int y) {
+        //System.out.println(x/elementsWidthSize);
+        return previewIndex(y/ elementsSize);
     }
     @Override
     public int previewIndex(int i) {

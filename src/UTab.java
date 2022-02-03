@@ -2,20 +2,70 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Vector;
 
 public class UTab extends JPanel{
+    UTabElement dragingContent;
     Vector<UTabElement> elements = new Vector<>();
     JPanel insertPanel = new JPanel();
     int elementsSize = 200;
     int spacing = 5;
     UTabElement selectedTab;
+    UTab sender;
+    UTab s;
     UTab() {
+        s = this;
         this.setBackground(Color.black);
         this.setForeground(Color.white);
         this.setLayout(null);
         insertPanel.setBackground(Color.red);
         this.add(insertPanel);
+        this.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (sender != null) {
+                    if (sender.dragingContent != null) {
+                        /*
+                        previewIndexAtLocation(e.getX());
+                        System.out.println(e.getX());
+
+                         */
+                        sender.dragingContent.setDes(s);
+/*
+                        UTabElement selectedElements = sender.dragingContent.clone();
+                        sender.dragingContent = null;
+                        selectedElements.isVertZ=false;
+                        addElements(selectedElements);
+
+*/
+                    }
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
     public void addElements(UTabElement uTabElement) {
         uTabElement.assign(this,elements.size(),new Dimension(elementsSize,this.getHeight() - spacing*2));
@@ -43,6 +93,7 @@ public class UTab extends JPanel{
         this.elements.remove(element);
         this.update();
     }
+
     public int previewIndexAtLocation(int x) {
         //System.out.println(x/elementsWidthSize);
         return previewIndex(x/ elementsSize);
@@ -60,6 +111,10 @@ public class UTab extends JPanel{
         }
         return i;
     }
+    public void addActionListener(ActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+    ActionListener actionListener;
     public void update() {
         this.removeAll();
         insertPanel.setBounds(0,0,spacing,this.getHeight());
@@ -75,5 +130,8 @@ public class UTab extends JPanel{
             this.add(selectedTab,0);
         }
         this.repaint();
+        if (actionListener != null) {
+            actionListener.actionPerformed(null);
+        }
     }
 }
