@@ -127,6 +127,11 @@ public class UTabElement extends JPanel {
         this();
         this.displayText.setText(text);
     }
+    Object bind;
+    UTabElement(String text,Object bind) {
+        this(text);
+        this.bind = bind;
+    }
     public void assign(UTab uTab,int tabIndex,Dimension size) {
         this.uTab = uTab;
         this.tabIndex = tabIndex;
