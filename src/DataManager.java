@@ -308,6 +308,9 @@ public class DataManager {
                 stringBuilder.append(c);
             }
         }
+        output.add(stringBuilder.toString());
+        stringBuilder.setLength(0);
+
         return output.toArray(new String[0]);
     }
     public void loadData(String filename) throws Exception {
@@ -316,6 +319,7 @@ public class DataManager {
         Scanner scan = new Scanner(fin);
         String readline = scan.nextLine();
         String[] dataArray = StringSplit(readline);
+        System.out.println(Arrays.toString(dataArray));
         int i = 0;
         for (String data: dataArray) {
             dimensionIndex.put(data,i);
