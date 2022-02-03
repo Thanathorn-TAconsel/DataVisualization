@@ -27,10 +27,13 @@ public class DataManager {
     public Set getDimension() {
         return dimensionIndex.keySet();
     }
-    public static double sum(ArrayList<Double> list) {
-        double sum = 0;
-        for (double data: (ArrayList<Double>) list) {
-            sum += data;
+    public static double[] sum(ArrayList<Double[]> list) {
+        //double sum = 0;
+        double[] sum = new double[list.get(0).length];
+        for (Double[] data: list) {
+            for (int i = 0;i <sum.length;i++) {
+                sum[i] += data[i];
+            }
         }
         return sum;
     }
@@ -75,9 +78,12 @@ public class DataManager {
                 }
                 displayRecusiveMap((HashMap) value,level+1,indexList,arrayList,build);
             } else if (value instanceof ArrayList) {
-                    double sum = avg((ArrayList<Double>) value);
+                    double[] sum = sum((ArrayList<Double[]>) value);
                     System.out.println(spaceBuilder(level+1) + sum);
-                    build[level+1] = sum + "";
+                    for (int i = 0;i < sum.length;i++) {
+                        build[level+1 + i] = sum[sum.length - i - 1] + "";
+                    }
+                    //build[level+1] = Arrays.toString(sum) + "";
                     arrayList.add(build.clone());
                     build = null;
             }
@@ -106,7 +112,11 @@ public class DataManager {
     public void insertInto(Object root,String[] data,int level,String[] list,int[] indexList) {
         if (level < list.length) {
             if (isMeasure[indexList[level]]) {
-                ((ArrayList<Double>) root).add(Double.valueOf(data[indexList[level]]));
+                Double[] numeric = new Double[indexList.length - level];
+                for (int i = level;i < indexList.length;i++) {
+                    numeric[(indexList.length - i) - 1] = Double.valueOf(data[indexList[i]]);
+                }
+                ((ArrayList<Double[]>) root).add(numeric);
                 //(ArrayList<String[]>)root.
                     /*
                     ArrayList<String[]> map = (ArrayList<String[]>) root.get(data[indexList[level]]);
