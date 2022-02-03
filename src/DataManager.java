@@ -1,9 +1,6 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class DataManager {
     HashMap<String,Integer> rowData = new HashMap<String, Integer>();
@@ -11,43 +8,42 @@ public class DataManager {
     ArrayList<String[]> dataList = new ArrayList();
     boolean[] isMeasure;
     HashMap<String ,Integer> dimensionIndex = new HashMap();
-    DataManager() throws Exception {
-        System.out.println("Intallizing");
-        loadData("Superstore.csv");
-        System.out.println("Loaded");
-        System.out.println(dimensionIndex.keySet());
-        String s[] = {"Category","Sub-Category","Quantity"};
-        //displayList(s,0,null);
-        HashMap map = scanByList(s);
-        int[] indexList = new int[s.length];
-        for (int i = 0;i < s.length;i++) {
-            indexList[i] = dimensionIndex.get(s[i]);
+    DataManager(String filename) throws Exception {
+        loadData(filename);
+    }
+    public void display(String scanList[],HashMap map) {
+        int[] indexList = new int[scanList.length];
+        for (int i = 0;i < scanList.length;i++) {
+            indexList[i] = dimensionIndex.get(scanList[i]);
         }
         displayRecusiveMap(map,0,indexList);
     }
 
-    public double sum(ArrayList<Double> list) {
+    public Set getDimension() {
+        return dimensionIndex.keySet();
+    }
+    public static double sum(ArrayList<Double> list) {
         double sum = 0;
         for (double data: (ArrayList<Double>) list) {
             sum += data;
         }
         return sum;
     }
-    public double max(ArrayList<Double> list) {
+    public static double max(ArrayList<Double> list) {
         double max = list.get(0);
         for (double data: (ArrayList<Double>) list) {
             if (data > max)max = data;
         }
         return max;
     }
-    public double min(ArrayList<Double> list) {
+    public static double min(ArrayList<Double> list) {
         double min = list.get(0);
         for (double data: (ArrayList<Double>) list) {
             if (data < min)min = data;
         }
         return min;
     }
-    public double avg(ArrayList<Double> list) {
+    public static double avg(ArrayList<Double> list) {
         double sum = 0;
         for (double data: (ArrayList<Double>) list) {
             sum += data;
@@ -61,7 +57,7 @@ public class DataManager {
             if (value instanceof HashMap) {
                 displayRecusiveMap((HashMap) value,level+1,indexList);
             } else if (value instanceof ArrayList) {
-                double sum = sum((ArrayList<Double>) value);
+                double sum = avg((ArrayList<Double>) value);
                     System.out.println(spaceBuilder(level+1) + sum);
             }
         }
@@ -300,7 +296,7 @@ public class DataManager {
         i = 0;
         for (String data: dataArray) {
             isMeasure[i] = isNumeric(data);
-            System.out.println(isMeasure[i]);
+            //System.out.println(isMeasure[i]);
             i++;
         }
         while (scan.hasNextLine()) {
@@ -321,6 +317,6 @@ public class DataManager {
         }
     }
     public static void main(String[] args) throws Exception{
-        new DataManager();
+        new DataManager("Superstore.csv");
     }
 }
