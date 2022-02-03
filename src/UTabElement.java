@@ -2,6 +2,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -23,6 +24,10 @@ public class UTabElement extends JPanel {
     int tabIndex = 0;
     int moveToIndex = -1;
     UTabElement uTabElement;
+    ActionListener actionListener;
+    public void addActionListener(ActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
     public UTabElement clone() {
         return  new UTabElement(this.displayText.getText() ,this.bind);
     }
@@ -48,7 +53,12 @@ public class UTabElement extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == 2) {
-                    uTab.removeElements(uTabElement);
+                    if (actionListener == null) {
+                        uTab.removeElements(uTabElement);
+                    } else {
+                        actionListener.actionPerformed(null);
+                    }
+
                 } else {
                     select();
                     setBackground(downColor);

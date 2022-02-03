@@ -80,24 +80,36 @@ public class Main {
 
     private void dataUpdate() {
         System.out.println(Arrays.toString(rowData));
+        if (rowData.length == 0) {
+            DefaultTableModel list = new DefaultTableModel(null,rowData);
+            table.table.setModel(list);
+        } else {
+            HashMap map = dataManager.scanByList(rowData);
+            ArrayList<String[]> array = dataManager.display(rowData,map);
+            String[][] data = new String[array.size()][rowData.length];
+            int i =0;
+            for (String[] obj: array) {
+                data[i] = obj;
+                i++;
+            }
 
-        HashMap map = dataManager.scanByList(rowData);
-        ArrayList<String[]> array = dataManager.display(rowData,map);
-        String[][] data = new String[array.size()][rowData.length];
-        int i =0;
-        for (String[] obj: array) {
-            data[i] = obj;
-            i++;
+            DefaultTableModel list = new DefaultTableModel(data,rowData);
+            table.table.setModel(list);
         }
 
-        DefaultTableModel list = new DefaultTableModel(data,rowData);
-        table.table.setModel(list);
     }
-    private void updateDimensionList() {
+    public void updateDimensionList() {
         datalist.elements.clear();
         for (Object dimension:dataManager.getDimension()) {
             if (!dataManager.isMeasure((String)dimension)) {
                 UTabElement element = new UTabElement("* " + (String)dimension,dimension);
+                element.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dataManager.isMeasure[dataManager.dimensionIndex.get((String)dimension)] = !dataManager.isMeasure[dataManager.dimensionIndex.get((String)dimension)];
+                        updateDimensionList();
+                    }
+                });
                 datalist.addElements(element);
             }
 
@@ -105,6 +117,13 @@ public class Main {
         for (Object dimension:dataManager.getDimension()) {
             if (dataManager.isMeasure((String)dimension)) {
                 UTabElement element = new UTabElement("# " + (String)dimension,dimension);
+                element.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dataManager.isMeasure[dataManager.dimensionIndex.get((String)dimension)] = !dataManager.isMeasure[dataManager.dimensionIndex.get((String)dimension)];
+                        updateDimensionList();
+                    }
+                });
                 datalist.addElements(element);
             }
 
